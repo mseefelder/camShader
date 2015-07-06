@@ -111,6 +111,8 @@ protected:
      */
     void mouseReleaseEvent (QMouseEvent * event);
 
+    void keyPressEvent (QKeyEvent * key);
+
 };
 
 #endif // GLWIDGET

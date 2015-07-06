@@ -3,6 +3,7 @@
 out vec4 out_Color;
 uniform sampler2D frameTexture;
 uniform ivec2 viewport;
+uniform float scale;
 
 #define NBINS 16
 
@@ -18,7 +19,7 @@ float rand(vec2 co)
 
 void main()
 {	
-	vec2 texCoord = vec2(gl_FragCoord.xy/vec2(viewport.xy)) + 0.01*vec2(rand(gl_FragCoord.xy));
+	vec2 texCoord = vec2(gl_FragCoord.xy/vec2(viewport.xy)) + scale*vec2(rand(gl_FragCoord.xy),rand(gl_FragCoord.yx));
   	vec4 tex = texture(frameTexture, texCoord+vec2(0.01,0));
   	out_Color = vec4(length(tex.xyz)*normalize(vec3(0.025,0.1,0.5)+tex.xyz), 1.0);
 }

@@ -30,7 +30,7 @@ void GLWidget::initialize (void)
     }
 
     // the default is /shaders from your running dir
-    string shaders_dir("./shaders/");
+    string shaders_dir("../shaders/");
 
     rendertexture.setShadersDir(shaders_dir);
     rendertexture.initialize();
@@ -118,6 +118,29 @@ void GLWidget::paintGL (void)
     random.renderTexture(*frameTexture, viewport);//debug commented
 
     update();
+}
+
+void GLWidget::keyPressEvent (QKeyEvent * key){
+    setFocus();
+    int pressed = key->key();
+    int modifiers = key->modifiers();
+
+    switch(pressed)
+    {
+        case Qt::Key_Plus:
+            random.incScale();
+            break;
+        case Qt::Key_Minus:
+            random.decScale();
+            break;
+        case Qt::Key_F5:
+            random.reloadShaders();
+            break;
+        default:
+            QGLWidget::keyPressEvent(key);
+
+    }
+
 }
 
 /**
