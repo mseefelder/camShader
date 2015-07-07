@@ -6,7 +6,7 @@
 #include <opencv/cv.hpp>
 #include <highgui.h>
 #include "cameraexception.hpp"
-#include "random.hpp"
+#include "freeze.hpp"
 
 using namespace std;
 
@@ -75,7 +75,7 @@ private:
 
     /// Render image effect (simply renders a texture)
     Effects::RenderTexture rendertexture;
-    Effects::Random random;
+    Effects::Freeze random;
 
     /// Texture to hold input image
     Tucano::Texture* frameTexture;

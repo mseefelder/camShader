@@ -113,7 +113,7 @@ set(
   ${CAMSHADER_DIR}/mainwindow.h
   ${CAMSHADER_DIR}/glwidget.hpp
   ${CAMSHADER_DIR}/cameraexception.hpp
-  ${CAMSHADER_DIR}/random.hpp
+  ${CAMSHADER_DIR}/freeze.hpp
   )
 
 qt5_wrap_ui(
