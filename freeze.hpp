@@ -22,6 +22,7 @@ public:
     Freeze ()
     {
         bool hasFbo = false;
+        sem = new AtomicBuffer(1);
     }
 
     /**
@@ -55,6 +56,8 @@ public:
         noise.setUniform("frameTexture", tex.bind());
         noise.setUniform("viewport", viewport);
         noise.setUniform("scale", scale);
+        //GLint location = noise.getUniformLocation("sem");
+        //glUniform1ui(location, sem);//setUniform("sem", sem);
         quad.render();
 
         noise.unbind();
@@ -80,6 +83,10 @@ private:
 
     ///
     float scale;
+
+    //unsigned int sem;
+
+    AtomicBuffer* sem;
 };
 
 }
