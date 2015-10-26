@@ -106,10 +106,9 @@ void GLWidget::paintGL (void)
 	glClearColor(1.0, 1.0, 1.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-    //*camera >> frame;
-    camera->read(frame);
-	cv::flip(frame, frame, 0);
-	frameTexture->create(GL_TEXTURE_2D, GL_RGB, frame.cols, frame.rows, GL_BGR, GL_UNSIGNED_BYTE, frame.ptr());
+    //camera->read(frame);
+	//cv::flip(frame, frame, 0);
+	//frameTexture->create(GL_TEXTURE_2D, GL_RGB, frame.cols, frame.rows, GL_BGR, GL_UNSIGNED_BYTE, frame.ptr());
 	
 
 	// renders the given image, not that we are setting a fixed viewport that follows the widgets size

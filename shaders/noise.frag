@@ -5,7 +5,11 @@ uniform sampler2D frameTexture;
 uniform ivec2 viewport;
 uniform float scale;
 
-uniform uint sem;
+//uniform uint sem;
+layout (binding = 0) buffer semBuffer
+{
+  int sem; // just as an example
+};
 
 #define NBINS 16
 
@@ -24,22 +28,22 @@ void main()
 	//vec2 texCoord = vec2(gl_FragCoord.xy/vec2(viewport.xy)) + scale*vec2(rand(gl_FragCoord.xy),rand(gl_FragCoord.yx));
   	//vec4 tex = texture(frameTexture, texCoord+vec2(0.01,0));
   	//out_Color = vec4(length(tex.xyz)*normalize(vec3(0.025,0.1,0.5)+tex.xyz), 1.0);
-  	ivec2 position = ivec2(gl_FragCoord.xy);
-  	vec4 px = texelFetch(frameTexture, position, 0);
+  	//ivec2 position = ivec2(gl_FragCoord.xy);
+  	//vec4 px = texelFetch(frameTexture, position, 0);
   	out_Color = vec4(0.);
   	//if (px.r > scale)
   	//	out_Color = vec4(1.);
   	bool done = false;
     uint locked = 0;
+    /*
     while(!done)
     {
-     // locked = imageAtomicCompSwap(sem, coord, 0u, 1u); will NOT work
         locked = atomicExchange(sem, 1u);
         if (locked == 0)
         {
             //performYourCriticalSection();
             if (px.r > scale)
-  				out_Color = vec4(1.);
+  				    out_Color = vec4(1.);
 
             memoryBarrier();
 
@@ -48,5 +52,13 @@ void main()
             // replacing this with a break will NOT work
             done = true;
         }
+    }
+    */
+    locked = atomicExchange(sem, 1);
+    if (locked == 0)
+    {
+        //performYourCriticalSection();
+        out_Color = vec4(1.);
+        atomicExchange(sem, 0);
     }
 }

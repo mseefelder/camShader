@@ -2,6 +2,7 @@
 #define __FREEZE___
 
 #include <tucano.hpp>
+#include <ctime>
 
 #define NBINS 16
 
@@ -21,8 +22,6 @@ public:
      */
     Freeze ()
     {
-        bool hasFbo = false;
-        sem = new AtomicBuffer(1);
     }
 
     /**
@@ -35,7 +34,9 @@ public:
      */
     virtual void initialize()
     {
-        bool hasFbo = false;
+        sem = new ShaderStorageBufferInt(1);
+        framecount = 0;
+        firstTime = false;
 
         loadShader(noise, "noise");
         quad.createQuad();
@@ -49,11 +50,11 @@ public:
      */
     void renderTexture (Texture& tex, Eigen::Vector2i viewport)
     {
-
         glViewport(0, 0, viewport[0], viewport[1]);
 
         noise.bind();
-        noise.setUniform("frameTexture", tex.bind());
+        sem->bindBase(0);
+        //noise.setUniform("frameTexture", tex.bind());
         noise.setUniform("viewport", viewport);
         noise.setUniform("scale", scale);
         //GLint location = noise.getUniformLocation("sem");
@@ -62,6 +63,23 @@ public:
 
         noise.unbind();
         tex.unbind();
+        sem->unbindBase();
+
+        if (framecount++ > 10000)
+        {
+            if (firstTime)
+            {
+                std::time_t beforeLast = last;
+                std::time(&last);
+                std::cout<<(1.0*framecount)/difftime(last, beforeLast)<<" fps"<<std::endl;    
+            }
+            else
+            {
+                std::time(&last);
+                firstTime = true;
+            }
+            framecount = 0;
+        }
 
     }
 
@@ -84,9 +102,15 @@ private:
     ///
     float scale;
 
+    int framecount;
+
+    std::time_t last;
+
+    bool firstTime;
+
     //unsigned int sem;
 
-    AtomicBuffer* sem;
+    ShaderStorageBufferInt* sem;
 };
 
 }
